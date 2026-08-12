@@ -1,0 +1,14 @@
+{
+  "name": "jobproofai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node --test tests/site.test.mjs",
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name jobproofai --branch main --commit-dirty=true"
+  },
+  "devDependencies": {
+    "wrangler": "4.121.0"
+  }
+}

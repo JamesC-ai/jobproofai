@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JobProofAI - Resume Evidence Gap Checker</title>
+    <meta name="description" content="Map job requirements to evidence already present in your resume, identify gaps, and prepare truthful review prompts in your browser." />
+    <link rel="canonical" href="https://jobproofai.pages.dev/" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="JobProofAI home"><span>JP</span> JobProofAI</a>
+      <nav><a href="/support">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+    </header>
+    <main>
+      <section class="workspace">
+        <form id="proofForm" class="input-panel">
+          <div class="title-row">
+            <div>
+              <p class="eyebrow">Browser-local evidence review</p>
+              <h1>Map job requirements to resume evidence</h1>
+            </div>
+            <button id="loadExample" class="quiet" type="button">Load example</button>
+          </div>
+          <p class="intro">Compare only what the text supports. Missing evidence becomes a question, never invented experience.</p>
+          <label>Target role<input id="role" name="role" required placeholder="e.g. Customer Success Operations Manager" /></label>
+          <label>Job description<textarea id="jobDescription" name="jobDescription" required minlength="180" rows="12" placeholder="Paste the responsibilities and requirements. Remove recruiter contact details and confidential hiring notes."></textarea></label>
+          <label>Resume text<textarea id="resume" name="resume" required minlength="180" rows="12" placeholder="Paste resume text. Remove address, phone, email, IDs, references, and other details not needed for evidence review."></textarea></label>
+          <label class="check"><input id="truthConfirmed" name="truthConfirmed" type="checkbox" required /> I will use only truthful, verifiable experience and review every suggestion myself.</label>
+          <div class="actions">
+            <button type="submit">Build evidence map</button>
+            <button id="clearAll" class="quiet" type="button">Clear</button>
+          </div>
+          <p class="boundary">No upload, account login, application submission, ATS score, interview prediction, or hiring guarantee.</p>
+        </form>
+        <section class="output-panel" aria-live="polite">
+          <div class="output-head">
+            <div><p class="eyebrow">Current review</p><h2>Evidence map</h2></div>
+            <div class="actions compact"><button id="copyReport" class="quiet" type="button" disabled>Copy</button><button id="downloadReport" class="quiet" type="button" disabled>Download</button></div>
+          </div>
+          <p id="status" class="status">Complete both text fields to build a current evidence map.</p>
+          <div id="summary" class="summary-grid" hidden></div>
+          <div id="results" class="results"></div>
+          <section id="reviewSection" hidden>
+            <h3>Truthful follow-up checklist</h3>
+            <ul id="reviewList"></ul>
+          </section>
+        </section>
+      </section>
+      <section class="offer-band" id="application-pack">
+        <div>
+          <p class="eyebrow">Optional paid handoff</p>
+          <h2>Buy only after the current map exposes evidence worth reviewing.</h2>
+          <p>The free map remains usable. The $19 Application Evidence Pack adds a browser-local review workbook, claim-verification table, and final human-review checklist.</p>
+        </div>
+        <div class="offer-actions">
+          <span class="price">$19</span>
+          <a id="checkoutPack" class="button-link" aria-disabled="true" data-checkout-url="https://namebatch.pagecheckai.com/api/checkout?v=jobproof-20260812&amp;product=jobproofai">Buy Application Evidence Pack</a>
+          <p id="paymentStatus" class="status">Build a current non-demo evidence map before checkout becomes available.</p>
+        </div>
+      </section>
+      <section class="activation-band" aria-label="Application Evidence Pack activation">
+        <div>
+          <p class="eyebrow">Paid download</p>
+          <h2>Activate the code from checkout.</h2>
+          <p>The license check sends only the activation code and product name. Resume text, job text, matches, and workbook content stay in this browser.</p>
+        </div>
+        <div class="activation-panel">
+          <label>Activation code<input id="packCode" type="text" autocomplete="off" placeholder="JP-XXXX-XXXX-XXXX-XXXX" /></label>
+          <div class="actions">
+            <button id="activatePack" type="button">Activate</button>
+            <button id="downloadPack" class="quiet" type="button" disabled>Download paid pack</button>
+          </div>
+          <p id="packStatus" class="status" aria-live="polite">Generate a current map, then enter the code from checkout.</p>
+        </div>
+      </section>
+      <section class="method-band">
+        <img src="/assets/evidence-map.jpg" alt="Illustration of requirements connected to resume evidence" width="1200" height="800" loading="lazy" />
+        <div>
+          <h2>What this review does</h2>
+          <div class="method-grid">
+            <article><strong>Explicit evidence</strong><p>Finds resume lines that share concrete terms with each stated requirement.</p></article>
+            <article><strong>Evidence gaps</strong><p>Turns weak or absent support into questions you must answer from real experience.</p></article>
+            <article><strong>Human decision</strong><p>Keeps job fit, wording, application choices, and final claims under your control.</p></article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer><span>JobProofAI</span><span><a href="/support">Support</a> <a href="/privacy">Privacy</a> <a href="/terms">Terms</a></span></footer>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
