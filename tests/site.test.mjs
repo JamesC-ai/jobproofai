@@ -47,8 +47,8 @@ test("includes privacy-safe policy and discovery files", async () => {
   assert.match(privacy, /activation code and product name/);
   assert.match(terms, /Matching words do not prove competence, job fit, ATS compatibility/);
   assert.match(terms, /Never invent or exaggerate evidence/);
-  assert.match(sitemap, /https:\/\/jobproofai\.pages\.dev\/support/);
-  assert.match(robots, /Sitemap: https:\/\/jobproofai\.pages\.dev\/sitemap\.xml/);
+  assert.match(sitemap, /https:\/\/jobproof\.pagecheckai\.com\/support/);
+  assert.match(robots, /Sitemap: https:\/\/jobproof\.pagecheckai\.com\/sitemap\.xml/);
 });
 
 test("builds extensionless policy routes", async () => {
