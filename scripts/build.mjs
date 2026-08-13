@@ -27,6 +27,11 @@ const routes = [
   "resume-certification-claim-checklist",
   "remote-work-experience-evidence",
   "customer-outcome-resume-evidence",
+  "internship-resume-evidence-checklist",
+  "portfolio-work-sample-evidence",
+  "resume-promotion-claim-evidence",
+  "cross-functional-collaboration-evidence",
+  "process-improvement-resume-evidence",
 ];
 for (const route of routes.slice(1)) {
   const target = new URL(`${route}/`, dist);
