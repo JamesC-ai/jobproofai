@@ -17,6 +17,11 @@ const routes = [
   "truthful-resume-tailoring-checklist",
   "interview-evidence-questions",
   "career-change-transferable-evidence",
+  "resume-bullet-evidence-audit",
+  "resume-skill-claim-verification",
+  "project-experience-evidence-checklist",
+  "manager-resume-outcome-evidence",
+  "return-to-work-experience-mapping",
 ];
 for (const route of routes.slice(1)) {
   const target = new URL(`${route}/`, dist);

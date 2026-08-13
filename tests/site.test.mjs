@@ -63,13 +63,18 @@ test("builds extensionless policy routes", async () => {
   }
 });
 
-test("ships five distinct evidence-first intent guides", async () => {
+test("ships ten distinct evidence-first intent guides", async () => {
   const routes = [
     "map-job-description-to-resume-evidence",
     "resume-evidence-gap-checklist",
     "truthful-resume-tailoring-checklist",
     "interview-evidence-questions",
     "career-change-transferable-evidence",
+    "resume-bullet-evidence-audit",
+    "resume-skill-claim-verification",
+    "project-experience-evidence-checklist",
+    "manager-resume-outcome-evidence",
+    "return-to-work-experience-mapping",
   ];
   const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
   const titles = new Set();
@@ -83,5 +88,5 @@ test("ships five distinct evidence-first intent guides", async () => {
     assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
   }
   assert.equal(titles.size, routes.length);
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 9);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 14);
 });
