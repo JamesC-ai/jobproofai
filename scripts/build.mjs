@@ -22,6 +22,11 @@ const routes = [
   "project-experience-evidence-checklist",
   "manager-resume-outcome-evidence",
   "return-to-work-experience-mapping",
+  "freelance-project-resume-evidence",
+  "volunteer-experience-resume-evidence",
+  "resume-certification-claim-checklist",
+  "remote-work-experience-evidence",
+  "customer-outcome-resume-evidence",
 ];
 for (const route of routes.slice(1)) {
   const target = new URL(`${route}/`, dist);
