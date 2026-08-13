@@ -42,6 +42,11 @@ const routes = [
   "product-launch-resume-evidence",
   "research-project-resume-evidence",
   "customer-support-resume-evidence",
+  "employee-onboarding-resume-evidence",
+  "inventory-accuracy-resume-evidence",
+  "event-coordination-resume-evidence",
+  "compliance-documentation-resume-evidence",
+  "incident-response-resume-evidence",
 ];
 for (const route of routes.slice(1)) {
   const target = new URL(`${route}/`, dist);
