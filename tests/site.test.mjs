@@ -29,7 +29,12 @@ test("ships browser-local mapping and current-input invalidation", async () => {
   assert.match(script, /product: "jobproofai"/);
   assert.match(script, /application_evidence_pack/);
   assert.match(script, /\^JP-/);
+  assert.match(script, /function downloadTextFile/);
+  assert.match(script, /document\.body\.append\(link\)/);
   assert.match(script, /window\.setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 1000\)/);
+  assert.match(script, /Evidence-map download could not start\. Your current map is still available; retry download\./);
+  assert.match(script, /Paid pack download could not start\. Your current evidence map and activation are still available; retry download\./);
+  assert.doesNotMatch(script, /link\.click\(\);\s*window\.setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 1000\);\s*updatePaidState/);
   assert.match(script, /fetch\(LICENSE_VERIFY_URL/);
   assert.doesNotMatch(script, /fetch\((?!LICENSE_VERIFY_URL)|XMLHttpRequest|WebSocket/);
 });

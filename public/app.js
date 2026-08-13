@@ -130,7 +130,30 @@ document.querySelector("#loadExample").addEventListener("click", () => {
   status.textContent = "Example loaded. Build the evidence map to review synthetic text.";
 });
 copyReport.addEventListener("click", async () => { if (!currentReport) return; await navigator.clipboard.writeText(currentReport); status.textContent = "Current evidence map copied."; });
-downloadReport.addEventListener("click", () => { if (!currentReport) return; const url = URL.createObjectURL(new Blob([currentReport], { type: "text/plain" })); const link = document.createElement("a"); link.href = url; link.download = "jobproofai-evidence-map.txt"; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); status.textContent = "Evidence-map download started. Wait for your browser to confirm the file."; });
+
+function downloadTextFile(text, filename) {
+  try {
+    const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+downloadReport.addEventListener("click", () => {
+  if (!currentReport) return;
+  const started = downloadTextFile(currentReport, "jobproofai-evidence-map.txt");
+  status.textContent = started
+    ? "Evidence-map download started. Wait for your browser to confirm the file."
+    : "Evidence-map download could not start. Your current map is still available; retry download.";
+});
 
 function paidPackText() {
   return [
@@ -184,13 +207,10 @@ async function verifyPackCode(rawCode, { quiet = false } = {}) {
 activatePack.addEventListener("click", () => verifyPackCode(packCode.value));
 downloadPack.addEventListener("click", () => {
   if (!packActive || !reportIsCurrent() || currentReportIsDemo) return updatePaidState("Build a current non-demo map and activate the pack before downloading.");
-  const url = URL.createObjectURL(new Blob([paidPackText()], { type: "text/plain;charset=utf-8" }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "jobproofai-application-evidence-pack.txt";
-  link.click();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-  updatePaidState("Paid pack download started. Wait for your browser to confirm the file.");
+  const started = downloadTextFile(paidPackText(), "jobproofai-application-evidence-pack.txt");
+  updatePaidState(started
+    ? "Paid pack download started. Wait for your browser to confirm the file."
+    : "Paid pack download could not start. Your current evidence map and activation are still available; retry download.");
 });
 
 const storedCode = localStorage.getItem(STORAGE_KEY);
