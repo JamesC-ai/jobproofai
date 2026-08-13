@@ -57,3 +57,26 @@ test("builds extensionless policy routes", async () => {
     assert.match(html, /JobProofAI/);
   }
 });
+
+test("ships five distinct evidence-first intent guides", async () => {
+  const routes = [
+    "map-job-description-to-resume-evidence",
+    "resume-evidence-gap-checklist",
+    "truthful-resume-tailoring-checklist",
+    "interview-evidence-questions",
+    "career-change-transferable-evidence",
+  ];
+  const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
+  const titles = new Set();
+  for (const route of routes) {
+    const html = await readFile(new URL(`${route}/index.html`, dist), "utf8");
+    titles.add(html.match(/<title>([^<]+)<\/title>/)?.[1]);
+    assert.match(html, /utm_source=seo/);
+    assert.match(html, /free evidence map|evidence map|Map evidence for free|Review evidence for free|Review a role for free|Map transferable evidence/i);
+    assert.match(html, /does not|No automatic|No interview|No fit/);
+    assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
+    assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
+  }
+  assert.equal(titles.size, routes.length);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 9);
+});

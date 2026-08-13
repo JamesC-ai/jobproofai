@@ -7,7 +7,17 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 await cp(publicDir, dist, { recursive: true });
 
-const routes = ["", "support", "privacy", "terms"];
+const routes = [
+  "",
+  "support",
+  "privacy",
+  "terms",
+  "map-job-description-to-resume-evidence",
+  "resume-evidence-gap-checklist",
+  "truthful-resume-tailoring-checklist",
+  "interview-evidence-questions",
+  "career-change-transferable-evidence",
+];
 for (const route of routes.slice(1)) {
   const target = new URL(`${route}/`, dist);
   await mkdir(target, { recursive: true });
