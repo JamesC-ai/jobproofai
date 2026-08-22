@@ -36,6 +36,16 @@ test("ships browser-local mapping and current-input invalidation", async () => {
   assert.match(script, /Paid pack download could not start\. Your current evidence map and activation are still available; retry download\./);
   assert.doesNotMatch(script, /link\.click\(\);\s*window\.setTimeout\(\(\) => URL\.revokeObjectURL\(url\), 1000\);\s*updatePaidState/);
   assert.match(script, /fetch\(LICENSE_VERIFY_URL/);
+  assert.match(script, /new AbortController\(\)/);
+  assert.match(script, /controller\.abort\(\), 10000/);
+  assert.match(script, /signal: controller\.signal/);
+  assert.match(script, /window\.clearTimeout\(timeout\)/);
+  assert.match(script, /activatePack\.disabled = false/);
+  assert.match(script, /Activation timed out or is temporarily unavailable/);
+  assert.match(script, /if \(!reportIsCurrent\(\) \|\| currentReportIsDemo\) return/);
+  assert.match(script, /if \(!navigator\.clipboard\?\.writeText\) throw new Error\("Clipboard unavailable"\)/);
+  assert.match(script, /Copy failed - retry/);
+  assert.match(script, /copyReport\.disabled = !reportIsCurrent\(\) \|\| currentReportIsDemo/);
   assert.doesNotMatch(script, /fetch\((?!LICENSE_VERIFY_URL)|XMLHttpRequest|WebSocket/);
 });
 

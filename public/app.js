@@ -129,7 +129,19 @@ document.querySelector("#loadExample").addEventListener("click", () => {
   updatePaidState("Synthetic example loaded. It cannot qualify for checkout.");
   status.textContent = "Example loaded. Build the evidence map to review synthetic text.";
 });
-copyReport.addEventListener("click", async () => { if (!currentReport) return; await navigator.clipboard.writeText(currentReport); status.textContent = "Current evidence map copied."; });
+copyReport.addEventListener("click", async () => {
+  if (!reportIsCurrent() || currentReportIsDemo) return;
+  copyReport.disabled = true;
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+    await navigator.clipboard.writeText(currentReport);
+    status.textContent = "Current evidence map copied.";
+  } catch {
+    status.textContent = "Copy failed - retry. Your current evidence map is still available.";
+  } finally {
+    copyReport.disabled = !reportIsCurrent() || currentReportIsDemo;
+  }
+});
 
 function downloadTextFile(text, filename) {
   try {
@@ -183,9 +195,12 @@ async function verifyPackCode(rawCode, { quiet = false } = {}) {
     updatePaidState(quiet ? "Enter a valid JP- activation code." : "That activation code format is not valid.");
     return false;
   }
+  activatePack.disabled = true;
   if (!quiet) packStatus.textContent = "Checking activation code...";
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 10000);
   try {
-    const response = await fetch(LICENSE_VERIFY_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, product: "jobproofai" }) });
+    const response = await fetch(LICENSE_VERIFY_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, product: "jobproofai" }), signal: controller.signal });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || !data.valid || data.entitlement !== "application_evidence_pack") {
       packActive = false;
@@ -199,8 +214,11 @@ async function verifyPackCode(rawCode, { quiet = false } = {}) {
     return true;
   } catch {
     packActive = false;
-    updatePaidState("Could not reach the license service. Try again, or use support with your PayPal receipt.");
+    updatePaidState("Activation timed out or is temporarily unavailable. Your evidence map remains on this device; retry shortly.");
     return false;
+  } finally {
+    window.clearTimeout(timeout);
+    activatePack.disabled = false;
   }
 }
 
