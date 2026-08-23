@@ -14,6 +14,7 @@ test("renders the evidence checker as the first screen", async () => {
   assert.match(html, /No upload, account login, application submission, ATS score/);
   assert.match(html, /id="checkoutPack"[^>]*aria-disabled="true"/);
   assert.match(html, /\$19 Application Evidence Pack/);
+  assert.match(html, /href="\/application-evidence-pack-preview"/);
   assert.match(html, /assets\/evidence-map\.jpg/);
   assert.doesNotMatch(html, /guarantee.{0,30}(interview|job|employment)/i);
 });
@@ -140,5 +141,19 @@ test("ships fifty-two distinct evidence-first intent guides", async () => {
     assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
   }
   assert.equal(titles.size, routes.length);
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 56);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 57);
+});
+
+test("shows the application evidence deliverable before checkout", async () => {
+  const route = "application-evidence-pack-preview";
+  const preview = await readFile(new URL(`${route}/index.html`, dist), "utf8");
+  const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
+  assert.match(preview, /Sample Application Evidence Pack/);
+  assert.match(preview, /Synthetic example/);
+  assert.match(preview, /Requirement-to-evidence workbook/);
+  assert.match(preview, /Claim-verification table/);
+  assert.match(preview, /Final human-review checklist/);
+  assert.match(preview, /Build a free current evidence map first/);
+  assert.match(preview, /No ATS score, recruiter preference, interview probability/);
+  assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
 });

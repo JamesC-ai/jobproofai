@@ -38,7 +38,7 @@ button:disabled { opacity:.45; cursor:not-allowed; }
 .activation-band { background:#eef3f7; }
 .offer-band > div,.activation-band > div { max-width:720px; }
 .offer-actions,.activation-panel { padding:22px; border:1px solid var(--line); background:var(--paper); }
-.price { display:block; margin-bottom:12px; font-size:30px; font-weight:800; }
+.price { display:block; margin-bottom:12px; font-size:30px; font-weight:800; }.preview-link{display:block;margin:0 0 14px;font-weight:700;color:var(--accent)}
 .button-link { display:inline-flex; min-height:42px; align-items:center; padding:9px 16px; border:1px solid var(--ink); border-radius:4px; background:var(--ink); color:#fff; font-weight:700; text-decoration:none; }
 .button-link[aria-disabled="true"] { opacity:.45; cursor:not-allowed; }
 .method-band h2 { margin-bottom:20px; }.method-grid article { padding:20px; border-left:3px solid var(--green); background:#fff; }.method-grid p { margin-bottom:0; }
