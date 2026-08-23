@@ -74,7 +74,7 @@ test("builds extensionless policy routes", async () => {
   }
 });
 
-test("ships fifty-two distinct evidence-first intent guides", async () => {
+test("ships fifty-three distinct evidence-first intent guides", async () => {
   const routes = [
     "map-job-description-to-resume-evidence",
     "resume-evidence-gap-checklist",
@@ -128,6 +128,7 @@ test("ships fifty-two distinct evidence-first intent guides", async () => {
     "operations-resume-evidence",
     "conflict-resolution-resume-evidence",
     "ai-resume-hallucination-evidence-check",
+    "first-job-no-formal-experience-evidence-map",
   ];
   const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
   const titles = new Set();
@@ -141,7 +142,23 @@ test("ships fifty-two distinct evidence-first intent guides", async () => {
     assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
   }
   assert.equal(titles.size, routes.length);
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 57);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 58);
+});
+
+test("keeps first-job evidence truthful when formal experience is absent", async () => {
+  const route = "first-job-no-formal-experience-evidence-map";
+  const guide = await readFile(new URL(`${route}/index.html`, dist), "utf8");
+  const home = await readFile(new URL("index.html", dist), "utf8");
+  const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
+  assert.match(guide, /no formal work history/i);
+  assert.match(guide, /explicit, partial, or missing/);
+  assert.match(guide, /Label coursework as coursework/);
+  assert.match(guide, /Do not convert these into employment, clients, internships, leadership, measured outcomes/);
+  assert.match(guide, /never supplies fabricated evidence/);
+  assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
+  assert.match(home, new RegExp(`href="/${route}"`));
+  assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
+  assert.doesNotMatch(guide, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
 });
 
 test("shows the application evidence deliverable before checkout", async () => {
