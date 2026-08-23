@@ -74,7 +74,7 @@ test("builds extensionless policy routes", async () => {
   }
 });
 
-test("ships fifty-three distinct evidence-first intent guides", async () => {
+test("ships fifty-four distinct evidence-first intent guides", async () => {
   const routes = [
     "map-job-description-to-resume-evidence",
     "resume-evidence-gap-checklist",
@@ -129,6 +129,7 @@ test("ships fifty-three distinct evidence-first intent guides", async () => {
     "conflict-resolution-resume-evidence",
     "ai-resume-hallucination-evidence-check",
     "first-job-no-formal-experience-evidence-map",
+    "resume-achievements-without-metrics-evidence",
   ];
   const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
   const titles = new Set();
@@ -142,7 +143,22 @@ test("ships fifty-three distinct evidence-first intent guides", async () => {
     assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
   }
   assert.equal(titles.size, routes.length);
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 58);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 59);
+});
+
+test("keeps achievements truthful when approved metrics are unavailable", async () => {
+  const route = "resume-achievements-without-metrics-evidence";
+  const guide = await readFile(new URL(`${route}/index.html`, dist), "utf8");
+  const home = await readFile(new URL("index.html", dist), "utf8");
+  const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
+  assert.match(guide, /without inventing a metric/i);
+  assert.match(guide, /result unconfirmed/);
+  assert.match(guide, /Never invent percentages, revenue, savings, volumes/);
+  assert.match(guide, /does not calculate performance/);
+  assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
+  assert.match(home, new RegExp(`href="/${route}"`));
+  assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
+  assert.doesNotMatch(guide, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
 });
 
 test("keeps first-job evidence truthful when formal experience is absent", async () => {

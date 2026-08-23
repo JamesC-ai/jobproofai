@@ -65,6 +65,7 @@ const routes = [
   "conflict-resolution-resume-evidence",
   "ai-resume-hallucination-evidence-check",
   "first-job-no-formal-experience-evidence-map",
+  "resume-achievements-without-metrics-evidence",
   "application-evidence-pack-preview",
 ];
 for (const route of routes.slice(1)) {
