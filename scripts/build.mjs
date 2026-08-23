@@ -63,6 +63,7 @@ const routes = [
   "customer-research-resume-evidence",
   "operations-resume-evidence",
   "conflict-resolution-resume-evidence",
+  "ai-resume-hallucination-evidence-check",
 ];
 for (const route of routes.slice(1)) {
   const target = new URL(`${route}/`, dist);
