@@ -155,6 +155,9 @@ test("keeps achievements truthful when approved metrics are unavailable", async 
   assert.match(guide, /result unconfirmed/);
   assert.match(guide, /Never invent percentages, revenue, savings, volumes/);
   assert.match(guide, /does not calculate performance/);
+  assert.match(guide, /after a layoff or departure/i);
+  assert.match(guide, /Do not sign back into a former employer.s systems/i);
+  assert.match(guide, /ask former colleagues to disclose confidential metrics/i);
   assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
   assert.match(home, new RegExp(`href="/${route}"`));
   assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
