@@ -143,7 +143,7 @@ test("ships fifty-four distinct evidence-first intent guides", async () => {
     assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
   }
   assert.equal(titles.size, routes.length);
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 59);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 60);
 });
 
 test("keeps achievements truthful when approved metrics are unavailable", async () => {
@@ -177,6 +177,23 @@ test("keeps first-job evidence truthful when formal experience is absent", async
   assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
   assert.match(home, new RegExp(`href="/${route}"`));
   assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
+  assert.doesNotMatch(guide, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
+});
+
+test("helps select relevant experience without inventing a continuous history", async () => {
+  const route = "many-short-jobs-resume-relevance-evidence";
+  const guide = await readFile(new URL(`${route}/index.html`, dist), "utf8");
+  const home = await readFile(new URL("index.html", dist), "utf8");
+  const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
+  assert.match(guide, /many short jobs/i);
+  assert.match(guide, /keep employer, title, and date facts unchanged/i);
+  assert.match(guide, /included, compressed, or omitted/);
+  assert.match(guide, /does not decide what an employer requires you to disclose/i);
+  assert.match(guide, /Never merge employers, extend dates, rename titles, or turn gaps into employment/);
+  assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
+  assert.match(home, new RegExp(`href="/${route}"`));
+  assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 60);
   assert.doesNotMatch(guide, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
 });
 
