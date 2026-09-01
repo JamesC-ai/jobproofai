@@ -67,6 +67,7 @@ const routes = [
   "first-job-no-formal-experience-evidence-map",
   "resume-achievements-without-metrics-evidence",
   "many-short-jobs-resume-relevance-evidence",
+  "official-title-vs-resume-title-evidence-checklist",
   "application-evidence-pack-preview",
 ];
 for (const route of routes.slice(1)) {

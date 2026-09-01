@@ -130,6 +130,7 @@ test("ships fifty-four distinct evidence-first intent guides", async () => {
     "ai-resume-hallucination-evidence-check",
     "first-job-no-formal-experience-evidence-map",
     "resume-achievements-without-metrics-evidence",
+    "official-title-vs-resume-title-evidence-checklist",
   ];
   const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
   const titles = new Set();
@@ -143,7 +144,7 @@ test("ships fifty-four distinct evidence-first intent guides", async () => {
     assert.doesNotMatch(html, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
   }
   assert.equal(titles.size, routes.length);
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 60);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 61);
 });
 
 test("keeps achievements truthful when approved metrics are unavailable", async () => {
@@ -193,7 +194,23 @@ test("helps select relevant experience without inventing a continuous history", 
   assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
   assert.match(home, new RegExp(`href="/${route}"`));
   assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 60);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 61);
+  assert.doesNotMatch(guide, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
+});
+
+test("maps an internal title to readable duties without rewriting the official record", async () => {
+  const route = "official-title-vs-resume-title-evidence-checklist";
+  const guide = await readFile(new URL(`${route}/index.html`, dist), "utf8");
+  const home = await readFile(new URL("index.html", dist), "utf8");
+  const sitemap = await readFile(new URL("sitemap.xml", dist), "utf8");
+  assert.match(guide, /keep the official employer title, employer, and dates unchanged/i);
+  assert.match(guide, /functional description/i);
+  assert.match(guide, /does not verify background checks, employer records, legal disclosure, ATS compatibility, interviews, or hiring/i);
+  assert.match(guide, /Never invent a promotion, seniority, management responsibility, dates, employer, title, or scope/i);
+  assert.match(guide, /Do not sign back into a former employer.s systems/i);
+  assert.equal((guide.match(/utm_source=seo/g) || []).length, 2);
+  assert.match(home, new RegExp(`href="/${route}"`));
+  assert.match(sitemap, new RegExp(`jobproof\\.pagecheckai\\.com/${route}`));
   assert.doesNotMatch(guide, /guaranteed interview|guaranteed job|ATS score:|hiring probability/i);
 });
 
